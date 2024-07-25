@@ -76,18 +76,14 @@ class DataHandler {
 		return buffer;
 	}
 
-	static validateResponse(packet) {
-		if (packet.length !== 17) {
-			throw new Error("Packet must be exactly 17 bytes");
-		}
-
+	static validateResponse(buffer) {
 		const buySell = String.fromCharCode(buffer.readUIntBE(4, 1));
 		if (buySell !== "B" && buySell !== "S") {
 			throw new Error("Invalid Buy/Sell Indicator.");
 		}
 
-		const qnty = buffer.readInt32BE(5, 4);
-		if (!Number.isInteger(qnty) || qnty < 0) {
+		const quantity = buffer.readInt32BE(5, 4);
+		if (!Number.isInteger(quantity) || quantity < 0) {
 			throw new Error("Invalid quantity.");
 		}
 
